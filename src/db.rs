@@ -10,6 +10,7 @@ pub async fn get_top_list(client: &Client) -> Result<Vec<FTRank>, MyError> {
         .await?
         .iter()
         .map(|row| FTRank::from_row_ref(row).unwrap())
-        .collect::<Vec<FTRank>>())
+        .collect::<Vec<FTRank>>()
+    )
 
 }

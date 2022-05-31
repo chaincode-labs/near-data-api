@@ -7,7 +7,7 @@ pub async fn get_top_list(
 ) -> Result<HttpResponse, Error> {
     let client: Client = db_pool.get().await.map_err(MyError::PoolError)?;
 
-    let rank_list = db::get_top_list(&client).await?;
-
-    Ok(HttpResponse::Ok().json(rank_list))
+    Ok(HttpResponse::Ok().json(
+        db::get_top_list(&client).await?
+    ))
 }
