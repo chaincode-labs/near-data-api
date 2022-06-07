@@ -1,0 +1,1 @@
+select $table_fields from assets__fungible_tokens where token_id = $1;

@@ -1,0 +1,1 @@
+select distinct emitted_by_contract_account_id as token_id  from assets__fungible_token_events;

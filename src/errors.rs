@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use actix_web::{HttpResponse, ResponseError};
 use actix_web::body::BoxBody;
 use deadpool_postgres::PoolError;
@@ -26,4 +27,17 @@ impl ResponseError for MyError {
             _ => HttpResponse::InternalServerError().finish(),
         }
     }
+}
+
+
+#[derive(Display, From, Debug)]
+pub enum TaskError{
+    FungibleTokenMetadataNotFound,
+    FungibleTokenTotalSupplyNotFound,
+
+}
+
+
+impl std::error::Error for TaskError {
+
 }

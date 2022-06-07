@@ -3,8 +3,11 @@ mod models;
 mod errors;
 mod db;
 mod handlers;
+mod tasks;
+mod rpc;
 
 use actix_web::{ web, App, HttpServer};
+use actix_web::rt::spawn;
 use dotenv::dotenv;
 use tokio_postgres::NoTls;
 
@@ -20,11 +23,13 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .route("/", web::get().to(|| async { "Hello World!" }))
-            .service(web::resource("/top-list").route(web::get().to(crate::handlers::get_top_list)))
+
     })
         .bind(config.server_addr.clone())?
         .run();
     println!("Server running at http://{}/", config.server_addr);
+
+    crate::tasks::run(&config).await;
 
     server.await
 }
