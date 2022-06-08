@@ -9,6 +9,7 @@ mod rpc;
 use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use tokio_postgres::NoTls;
+use crate::handlers::get_fungible_tokens_list;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -22,7 +23,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .route("/", web::get().to(|| async { "Hello World!" }))
-
+            .service(web::resource("/token-list").route(web::get().to(get_fungible_tokens_list)))
     })
         .bind(config.server_addr.clone())?
         .run();

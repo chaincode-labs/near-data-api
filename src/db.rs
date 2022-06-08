@@ -109,9 +109,7 @@ pub async fn update_fungible_tokens_transaction_data(
         .map_or_else(|e| Err(MyError::PGError(e)), |_| Ok(()))
 }
 
-pub async fn clear_fungible_tokens_transaction_data(
-    client: &Client,
-) -> Result<(), MyError> {
+pub async fn clear_fungible_tokens_transaction_data(client: &Client) -> Result<(), MyError> {
     let mut _stmt = include_str!("../sql/clear_assets__fungible_tokens_transaction_data.sql");
 
     let stmt = client.prepare(&_stmt).await.unwrap();
@@ -121,7 +119,6 @@ pub async fn clear_fungible_tokens_transaction_data(
         .await
         .map_or_else(|e| Err(MyError::PGError(e)), |_| Ok(()))
 }
-
 
 pub async fn update_fungible_tokens(
     client: &Client,
@@ -180,4 +177,15 @@ pub async fn get_fungible_tokens_by_id(
         return Ok(FungibleToken::from_row_ref(&row));
     }
     return Err(MyError::NotFound);
+}
+
+pub async fn get_all_fungible_tokens(client: &Client) -> Result<Vec<FungibleToken>, MyError> {
+    let _stmt = "select * from assets__fungible_tokens order by transaction_count desc";
+    let stmt = client.prepare(&_stmt).await.unwrap();
+    Ok(client
+        .query(&stmt, &[])
+        .await?
+        .iter()
+        .map(|row| FungibleToken::from_row_ref(row))
+        .collect::<Vec<FungibleToken>>())
 }
