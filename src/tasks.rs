@@ -1,10 +1,5 @@
 use crate::config::Config;
-use crate::db::{
-    clear_fungible_tokens_transaction_data, get_all_active_token_id_list,
-    get_fungible_tokens_burn_amount, get_fungible_tokens_by_id, get_fungible_tokens_holder_count,
-    get_fungible_tokens_transaction_data, update_fungible_tokens_burn_amount,
-    update_fungible_tokens_holder_count, update_fungible_tokens_transaction_data,
-};
+use crate::db::*;
 use actix_web::rt::spawn;
 use near_contract_standards::fungible_token::metadata::FungibleTokenMetadata;
 use tokio::time::{self, Duration};
