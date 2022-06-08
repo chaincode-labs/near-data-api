@@ -6,8 +6,7 @@ mod handlers;
 mod tasks;
 mod rpc;
 
-use actix_web::{ web, App, HttpServer};
-use actix_web::rt::spawn;
+use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use tokio_postgres::NoTls;
 
@@ -17,7 +16,7 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
     let config = crate::config::Config::from_env().unwrap();
-    let pool = config.pg.create_pool(None, NoTls).unwrap();
+    let pool = config.fp_pg.create_pool(None, NoTls).unwrap();
 
     let server = HttpServer::new(move || {
         App::new()

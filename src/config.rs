@@ -4,7 +4,12 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct Config {
     pub server_addr: String,
-    pub pg: deadpool_postgres::Config,
+    pub near_pg: deadpool_postgres::Config,
+    pub fp_pg: deadpool_postgres::Config,
+    pub sync_metadata_interval: u64,
+    pub sync_burn_amount_interval: u64,
+    pub sync_holder_count_interval: u64,
+    pub sync_transaction_data_interval: u64,
 }
 
 impl Config {

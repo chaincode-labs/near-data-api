@@ -5,12 +5,12 @@
 CREATE TABLE IF NOT EXISTS public.assets__fungible_tokens
 (
     token_id text COLLATE pg_catalog."default" NOT NULL,
-    total_supply text COLLATE pg_catalog."default",
-    burn_amount text COLLATE pg_catalog."default",
-    holder_count integer,
-    transaction_count integer,
-    transaction_amount text COLLATE pg_catalog."default",
-    metadata jsonb,
+    total_supply text COLLATE pg_catalog."default" DEFAULT 0,
+    burn_amount text COLLATE pg_catalog."default" DEFAULT 0,
+    holder_count integer DEFAULT 0,
+    transaction_count integer DEFAULT 0,
+    transaction_amount text COLLATE pg_catalog."default" DEFAULT 0,
+    metadata text COLLATE pg_catalog."default",
     CONSTRAINT assets__fungible_tokens_pkey PRIMARY KEY (token_id)
 )
 

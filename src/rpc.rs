@@ -1,24 +1,19 @@
-use crate::config::Config;
-use crate::db::{get_all_active_token_id_list, get_fungible_tokens_burn_amount_by_id};
 use crate::errors::TaskError;
 use curl::easy::{Easy, List};
-use deadpool_postgres::Client;
 use near_contract_standards::fungible_token::metadata::FungibleTokenMetadata;
 use near_sdk::json_types::U128;
 use near_sdk::serde_json::json;
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use std::error::Error;
+use serde::{Deserialize};
 use std::io::Read;
 
 #[derive(Deserialize)]
-struct bin_data {
+struct BinData {
     pub result: Vec<u8>,
 }
 
 #[derive(Deserialize)]
-struct json_data {
-    pub result: bin_data,
+struct JsonData {
+    pub result: BinData,
 }
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -73,9 +68,9 @@ pub fn get_fungible_token_metadata(id: &String) -> Result<FungibleTokenMetadata>
     let body = str.as_bytes();
     let data = request_json_rpc_with_body(body)?;
     if !data.is_empty() {
-        if let Ok(json_value) = serde_json::from_slice::<json_data>(data.as_slice()) {
+        if let Ok(json_value) = serde_json::from_slice::<JsonData>(data.as_slice()) {
             if let Ok(ft) =
-            serde_json::from_slice::<FungibleTokenMetadata>(json_value.result.result.as_slice())
+                serde_json::from_slice::<FungibleTokenMetadata>(json_value.result.result.as_slice())
             {
                 return Ok(ft);
             }
@@ -102,7 +97,7 @@ pub fn get_fungible_token_total_supply(id: &String) -> Result<U128> {
     let body = str.as_bytes();
     let data = request_json_rpc_with_body(body)?;
     if !data.is_empty() {
-        if let Ok(json_value) = serde_json::from_slice::<json_data>(data.as_slice()) {
+        if let Ok(json_value) = serde_json::from_slice::<JsonData>(data.as_slice()) {
             if let Ok(b) = serde_json::from_slice::<U128>(json_value.result.result.as_slice()) {
                 return Ok(b);
             }

@@ -1,4 +1,3 @@
-use std::fmt::{Display, Formatter};
 use actix_web::{HttpResponse, ResponseError};
 use actix_web::body::BoxBody;
 use deadpool_postgres::PoolError;
@@ -28,6 +27,7 @@ impl ResponseError for MyError {
         }
     }
 }
+
 
 
 #[derive(Display, From, Debug)]
