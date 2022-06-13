@@ -6,10 +6,12 @@ mod handlers;
 mod tasks;
 mod rpc;
 
+use std::sync::Arc;
 use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use tokio_postgres::NoTls;
 use crate::handlers::get_fungible_tokens_list;
+use crate::tasks::TaskManager;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -29,7 +31,12 @@ async fn main() -> std::io::Result<()> {
         .run();
     println!("Server running at http://{}/", config.server_addr);
 
-    crate::tasks::run(&config).await;
+    let cfg = Arc::new(config);
+
+    TaskManager::new(cfg.clone())
+        .await
+        .run()
+        .await;
 
     server.await
 }
